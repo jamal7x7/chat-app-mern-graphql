@@ -11,9 +11,11 @@ const {
 	DB_PASSWORD,
 	DB_PORT,
 	DB_USERNAME,
-	IN_PROD
+	NODE_ENV
+	// IN_PROD
 } = process.env
 
+const IN_PROD = NODE_ENV === 'production'
 const uri0 = 'mongodb://localhost:' + DB_PORT + '/' + DB_NAME
 
 const uri =

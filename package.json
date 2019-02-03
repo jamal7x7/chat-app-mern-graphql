@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node -r esm",
-    "dev": "nodemon -r esm dotenv/config"
+    "dev": " NODE_ENV=development nodemon -r esm"
   },
   "keywords": [],
   "author": "Jamal <jamal7x7@gmail.com>",
