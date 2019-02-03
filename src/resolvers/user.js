@@ -1,5 +1,7 @@
+import Joi from 'joi'
 import mongoose from 'mongoose'
 import { User } from '../models'
+import { SignUp } from '../schemas'
 
 export default {
 	Query: {
@@ -16,10 +18,11 @@ export default {
 		}
 	},
 	Mutation: {
-		signUp: (root, args, context, info) => {
+		signUp: async (root, args, context, info) => {
 			// TODO: not auth
 			// Validation
-			return User.create(args)
+			await Joi.validate(args, SignUp) // joi validation
+			return User.create(args) // mongoose add data
 		}
 	}
 }

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node -r esm",
-    "dev": "NODE_ENV=development nodemon -r esm"
+    "dev": "nodemon -r esm dotenv/config"
   },
   "keywords": [],
   "author": "Jamal <jamal7x7@gmail.com>",
@@ -14,9 +14,11 @@
     "apollo-server": "^2.3.3",
     "apollo-server-express": "^2.3.3",
     "bcryptjs": "^2.4.3",
+    "dotenv": "^6.2.0",
     "esm": "^3.2.0",
     "express": "^4.16.4",
     "graphql": "^14.1.1",
+    "joi": "^14.3.1",
     "mongoose": "^5.4.8"
   }
 }

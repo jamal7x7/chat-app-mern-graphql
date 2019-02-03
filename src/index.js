@@ -1,16 +1,18 @@
+require('dotenv').config()
 import { ApolloServer } from 'apollo-server-express'
 import express from 'express'
 import mongoose from 'mongoose'
-import {
+import resolvers from './resolvers'
+import typeDefs from './typeDefs'
+
+const {
 	APP_PORT,
 	DB_NAME,
 	DB_PASSWORD,
 	DB_PORT,
 	DB_USERNAME,
 	IN_PROD
-} from './config'
-import resolvers from './resolvers'
-import typeDefs from './typeDefs'
+} = process.env
 
 const uri0 = 'mongodb://localhost:' + DB_PORT + '/' + DB_NAME
 
@@ -23,7 +25,8 @@ const uri =
 	DB_NAME +
 	'?retryWrites=true/'
 
-console.log(uri, uri0)
+// console.log(uri, uri0)
+// console.log(process.env)
 ;(async () => {
 	try {
 		await mongoose.connect(uri, { useNewUrlParser: true })
