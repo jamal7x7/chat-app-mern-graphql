@@ -56,8 +56,8 @@ const uri =
 
 		// const store = new RedisStore({
 		// 	host: 'localhost',
-		// 	port: 17549,
-		// 	pass: 'UzzNYKCeYtjgyseJ7i3V4CQO3hG5a5ub'
+		// 	port: REDIS_PORT,
+		// 	pass: REDIS_PASS
 		// })
 
 		// console.log(REDIS_HOST, REDIS_PORT, REDIS_PASS)
