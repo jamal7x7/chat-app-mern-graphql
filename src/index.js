@@ -1,6 +1,6 @@
 require('dotenv').config()
-const RedisStore = require('connect-redis')(session)
 import { ApolloServer } from 'apollo-server-express'
+import connectRedis from 'connect-redis'
 import express from 'express'
 import session from 'express-session'
 import mongoose from 'mongoose'
@@ -18,8 +18,8 @@ const {
 
 	SESS_NAME,
 	SESS_SECRET,
-	// SESS_LIFETIME
-	// IN_PROD
+	SESS_LIFETIME,
+	// IN_PROD,
 
 	REDIS_HOST,
 	REDIS_PORT,
@@ -54,25 +54,28 @@ const uri =
 		const app = express()
 		app.disable('x-powered-by')
 
-		// const store = new RedisStore({
-		// 	host: 'localhost',
-		// 	port: REDIS_PORT,
-		// 	pass: REDIS_PASS
-		// })
+		// REDIS STORE
 
-		// console.log(REDIS_HOST, REDIS_PORT, REDIS_PASS)
+		const RedisStore = connectRedis(session)
+
+		let store = new RedisStore({
+			host: 'redis-15137.c8.us-east-1-4.ec2.cloud.redislabs.com',
+			port: 15137,
+			pass: 'secret'
+		})
+
+		console.log(REDIS_HOST, REDIS_PORT, REDIS_PASS)
 
 		app.use(
 			session({
-				// store,
+				store,
 				name: SESS_NAME,
 				secret: SESS_SECRET,
 				resave: false,
 				saveUninitialized: false,
 				cookie: {
 					httpOnly: true,
-					// maxAge: SESS_LIFETIME,
-					maxAge: 3600,
+					maxAge: parseInt(SESS_LIFETIME),
 					sameSite: true,
 					secure: IN_PROD
 				}
@@ -82,7 +85,6 @@ const uri =
 		const server = new ApolloServer({
 			typeDefs,
 			resolvers,
-			cors: false,
 			context: ({ req, res }) => ({ req, res }),
 			playground: IN_PROD
 				? false
@@ -93,7 +95,7 @@ const uri =
 				  }
 		})
 
-		server.applyMiddleware({ app }) // app is from an existing express app
+		server.applyMiddleware({ app, cors: false }) // app is from an existing express app
 
 		app.listen({ port: APP_PORT }, () =>
 			console.log(

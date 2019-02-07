@@ -64,6 +64,7 @@ export default {
 		},
 		signOut: async (root, args, { req, res }, info) => {
 			auth.checkSignedIn(req)
+			return auth.signOut(req, res)
 		}
 	}
 }

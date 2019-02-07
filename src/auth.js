@@ -2,7 +2,7 @@ import { AuthenticationError } from 'apollo-server-express'
 import { User } from './models'
 const { SESS_NAME } = process.env
 
-const attemptSignIn = async (email, password) => {
+export const attemptSignIn = async (email, password) => {
 	const message = 'Incorrect email or password, try again!'
 
 	const user = await User.findOne({ email })
@@ -32,11 +32,11 @@ export const checkSignedOut = (req, res) => {
 	}
 }
 
-export const signedOut = (req, res) =>
-	new Premise((resolve, reject) => {
+export const signOut = (req, res) =>
+	new Promise((resolve, reject) => {
 		req.session.destroy(err => {
 			if (err) reject(err)
-			res.clearCookie(SESS_NAME)
+			res.clearCookie('kid')
 			resolve(true)
 		})
 	})

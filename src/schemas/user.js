@@ -44,3 +44,7 @@ export const signIn = Joi.object().keys({
 	email,
 	password
 })
+export const signOut = Joi.object().keys({
+	email,
+	password
+})
