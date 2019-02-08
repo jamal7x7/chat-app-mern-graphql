@@ -1,4 +1,4 @@
-const Joi = require('joi')
+import Joi from 'joi'
 
 const email = Joi.string()
 	.email({ minDomainAtoms: 2 })
@@ -44,6 +44,7 @@ export const signIn = Joi.object().keys({
 	email,
 	password
 })
+
 export const signOut = Joi.object().keys({
 	email,
 	password

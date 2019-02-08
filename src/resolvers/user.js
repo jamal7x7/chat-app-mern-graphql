@@ -1,20 +1,20 @@
 import Joi from 'joi'
 import mongoose from 'mongoose'
-import * as auth from '../auth'
+import * as Auth from '../auth'
 import { User } from '../models'
 import { signIn, signUp } from '../schemas'
 
 export default {
 	Query: {
-		me: async (root, { email, password }, { req, res }, info) => {
-			const user = await auth.checkSignedIn(req, res)
+		me: async (root, args, { req, res }, info) => {
+			const user = await Auth.checkSignedIn(req, res)
 			return await User.findById(req.session.userId)
 		},
 		users: async (root, { email, password }, { req, res }, info) => {
 			req.session.email = email
 			req.session.password = password
 
-			const user = await auth.checkSignedIn(req, res)
+			const user = await Auth.checkSignedIn(req, res)
 
 			if (user) {
 				console.log('hhooooooo')
@@ -23,9 +23,9 @@ export default {
 			}
 		},
 		user: async (root, { email, password }, { req, res }, info) => {
-			// TODO: auth, projection, sanitization
+			// TODO: Auth, projection, sanitization
 
-			auth.checkSignedIn(req, res)
+			Auth.checkSignedIn(req, res)
 			if (!mongoose.Types.ObjectId.isValid(id)) {
 				throw new UserInputError(`${id} — is not a valid user id`)
 			}
@@ -33,10 +33,11 @@ export default {
 		}
 	},
 	Mutation: {
+		////////////////////////////  SIGNUP  ////////////////////////////////////
 		signUp: async (root, args, { req, res }, info) => {
-			// TODO: not auth
+			// TODO: not Auth
 			// Validation
-			auth.checkSignedOut(req, res)
+			Auth.checkSignedOut(req, res)
 			await Joi.validate(args, signUp, { abortEarly: false }) // joi validation
 
 			const user = await User.create(args) // mongoose add data
@@ -44,6 +45,7 @@ export default {
 			return user
 		},
 
+		////////////////////////////  SIGNIN  ////////////////////////////////////
 		signIn: async (root, args, { req, res }, info) => {
 			const { userId } = req.session
 			if (userId) {
@@ -56,15 +58,17 @@ export default {
 				password: args.password
 			})
 
-			const user = await auth.attemptSignIn(args.email, args.password)
+			const user = await Auth.attemptSignIn(args.email, args.password)
 
 			req.session.userId = user.id
 
 			return user
 		},
+
+		////////////////////////////  SIGNOUT  ////////////////////////////////////
 		signOut: async (root, args, { req, res }, info) => {
-			auth.checkSignedIn(req)
-			return auth.signOut(req, res)
+			Auth.checkSignedIn(req)
+			return Auth.signOut(req, res)
 		}
 	}
 }

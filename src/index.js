@@ -59,16 +59,16 @@ const uri =
 		const RedisStore = connectRedis(session)
 
 		let store = new RedisStore({
-			host: 'redis-15137.c8.us-east-1-4.ec2.cloud.redislabs.com',
-			port: 15137,
-			pass: 'secret'
+			host: REDIS_HOST,
+			port: REDIS_PORT,
+			pass: REDIS_PASS
 		})
 
 		console.log(REDIS_HOST, REDIS_PORT, REDIS_PASS)
 
 		app.use(
 			session({
-				store,
+				// store,
 				name: SESS_NAME,
 				secret: SESS_SECRET,
 				resave: false,
